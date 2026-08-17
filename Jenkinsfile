@@ -9,6 +9,7 @@ pipeline {
     }
 
     options {
+        skipDefaultCheckout(true)
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(time: 30, unit: 'MINUTES')
@@ -22,6 +23,13 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                deleteDir()
+                git branch: 'main', url: 'https://github.com/Lasya2905/secureai-confidential-computing'
+            }
+        }
+
         stage('Install Dependencies') {
             parallel {
                 stage('Backend deps') {
