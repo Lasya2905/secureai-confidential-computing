@@ -15,13 +15,6 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
 
-    options {
-        skipDefaultCheckout(true)
-        timestamps()
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        timeout(time: 30, unit: 'MINUTES')
-    }
-
     stages {
         stage('Checkout') {
             steps {
