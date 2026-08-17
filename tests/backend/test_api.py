@@ -1,6 +1,8 @@
 """Backend tests for SecureAI Cloud API."""
 import os
 import sys
+
+import pytest
 from fastapi.testclient import TestClient
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
@@ -10,22 +12,26 @@ os.environ.setdefault("DB_NAME", "secureai_cloud_test")
 
 from server import app  # noqa: E402
 
-client = TestClient(app)
+
+@pytest.fixture(scope="module")
+def client():
+    with TestClient(app) as test_client:
+        yield test_client
 
 
-def test_root():
+def test_root(client):
     r = client.get("/api/")
     assert r.status_code == 200
     assert r.json()["service"] == "SecureAI Cloud API"
 
 
-def test_health():
+def test_health(client):
     r = client.get("/api/health")
     assert r.status_code == 200
     assert "status" in r.json()
 
 
-def test_tee_technologies():
+def test_tee_technologies(client):
     r = client.get("/api/tee-technologies")
     assert r.status_code == 200
     data = r.json()
@@ -33,7 +39,7 @@ def test_tee_technologies():
     assert {"Intel SGX", "AMD SEV", "Intel TDX", "ARM TrustZone"}.issubset(names)
 
 
-def test_create_and_get_workload():
+def test_create_and_get_workload(client):
     payload = {
         "workload_name": "Test Workload",
         "model_name": "TestModel-v1",
@@ -45,24 +51,23 @@ def test_create_and_get_workload():
 
     r = client.post("/api/workloads", json=payload)
 
-    assert r.status_code in [200, 201, 500]
+    assert r.status_code == 201
 
-    if r.status_code in [200, 201]:
-        wl = r.json()
-        assert "id" in wl
+    wl = r.json()
+    assert "id" in wl
 
-        r2 = client.get(f"/api/workloads/{wl['id']}")
-        assert r2.status_code == 200
-        assert r2.json()["id"] == wl["id"]
+    r2 = client.get(f"/api/workloads/{wl['id']}")
+    assert r2.status_code == 200
+    assert r2.json()["id"] == wl["id"]
 
 
-def test_list_workloads():
+def test_list_workloads(client):
     r = client.get("/api/workloads")
     assert r.status_code == 200
     assert isinstance(r.json(), list)
 
 
-def test_deployment_status():
+def test_deployment_status(client):
     r = client.get("/api/deployment-status")
     assert r.status_code == 200
     data = r.json()
@@ -70,7 +75,7 @@ def test_deployment_status():
     assert data["ci_cd"]["tool"] == "Jenkins"
 
 
-def test_invalid_workload():
+def test_invalid_workload(client):
     payload = {
         "workload_name": "x",
         "model_name": "y",
@@ -79,5 +84,6 @@ def test_invalid_workload():
         "security_level": "High",
         "tee_technology": "Intel SGX",
     }
+
     r = client.post("/api/workloads", json=payload)
-    assert r.status_code == 42
+    assert r.status_code == 422
