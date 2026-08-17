@@ -1,0 +1,35 @@
+{
+  "summary": "First-finish latency test for SecureAI Cloud. Backend: 9/9 endpoints healthy (health, tee-technologies, workloads list, POST workload, invalid 422, GET by id, security-analysis rerun, dashboard/stats, deployment-status). Frontend: all major flows work - Dashboard 4 stat cards, TEE 4 cards, Submit Workload full form + successful deploy, Workload Monitor with 7 rows and filters, Workload Detail with 5 indicators + radar + rerun (score changed 95->94), CI/CD with 8 pipeline stages.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/health -> status healthy, db connected",
+    "GET /api/tee-technologies -> 4 TEEs (Intel SGX, AMD SEV, Intel TDX, ARM TrustZone) with description/security_purpose/use_case",
+    "GET /api/workloads -> 5+ seeded workloads",
+    "POST /api/workloads -> creates workload with id, status=Secure, full security_analysis (data_protection, memory_isolation, runtime_protection, secure_execution, attestation_status, overall_score, attested, findings)",
+    "POST /api/workloads invalid dataset_type -> 422 with clear error",
+    "GET /api/workloads/{id} -> returns created workload",
+    "POST /api/workloads/{id}/security-analysis -> new scores + findings (200)",
+    "GET /api/dashboard/stats -> total/active/protected/recent_activity present",
+    "GET /api/deployment-status -> GitHub source_control + Jenkins ci_cd with build/test/deploy = SUCCESS/PASSED/DEPLOYED + 8 pipeline stages",
+    "Dashboard: stat-security, stat-protected, stat-active, stat-health rendered",
+    "TEE Technologies: tee-card-intel-sgx, tee-card-amd-sev, tee-card-intel-tdx, tee-card-arm-trustzone visible",
+    "Submit Workload: workload-form filled (name, model, all 4 selects), submit-workload-btn -> workload-result card with ID and SECURE badge",
+    "Workload Monitor: workloads-table with 7 rows, filter-secure clickable",
+    "Workload Detail: radar-chart-card + 5 indicator-* cards + rerun-analysis-btn refreshes score",
+    "CI/CD: 8 stage-* items rendered under pipeline-stages"
+  ],
+  "failed": [
+    {
+      "area": "backend /api/dashboard/stats",
+      "issue": "Response missing `tee_distribution` field mentioned in spec (frontend expects stats.tee_distribution and shows empty state fallback)",
+      "evidence": "curl response has total/active/protected/failed_workloads, tee_status, system_health, overall_security, recent_activity but no tee_distribution",
+      "priority": "MEDIUM"
+    }
+  ],
+  "action_items": [
+    "Add `tee_distribution` array (e.g. [{tee: 'Intel SGX', count: N}, ...]) to GET /api/dashboard/stats so Dashboard TEE distribution chart populates instead of showing empty state."
+  ],
+  "success_rate": {"backend": "100% (critical endpoints)", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

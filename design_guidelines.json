@@ -1,0 +1,106 @@
+{
+  "theme": "dark",
+  "typography": {
+    "fonts": {
+      "headings": {
+        "family": "Chivo",
+        "styles": "font-black tracking-tighter",
+        "import_instructions": "Import 'Chivo' from Google Fonts."
+      },
+      "body": {
+        "family": "Inter",
+        "styles": "font-normal tracking-normal",
+        "import_instructions": "Standard Inter."
+      },
+      "data_and_code": {
+        "family": "JetBrains Mono",
+        "styles": "font-medium tracking-tight",
+        "import_instructions": "Import 'JetBrains Mono' from Google Fonts."
+      }
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl leading-none",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl leading-tight",
+      "h3": "text-xl sm:text-2xl",
+      "h4": "text-lg sm:text-xl",
+      "body": "text-base",
+      "labels": "text-xs uppercase tracking-[0.2em]"
+    }
+  },
+  "colors": {
+    "background": "#0a0f1c",
+    "surface": "#12182b",
+    "surface_glass": "rgba(18, 24, 43, 0.6)",
+    "primary": "#00f0ff",
+    "primary_glow": "rgba(0, 240, 255, 0.2)",
+    "success": "#00ff94",
+    "success_glow": "rgba(0, 255, 148, 0.2)",
+    "danger": "#ff003c",
+    "danger_glow": "rgba(255, 0, 60, 0.2)",
+    "warning": "#ffb000",
+    "text_primary": "#ffffff",
+    "text_secondary": "#8a96b3",
+    "border": "#1e293b",
+    "border_highlight": "rgba(0, 240, 255, 0.3)"
+  },
+  "visual_enhancers": {
+    "surfaces": "Retro-Futurism / Grid Borders: Use 1px borders with border-slate-800. Cards should have no shadow but a subtle inner glow on hover.",
+    "glassmorphism": "For sticky headers or floating elements, use backdrop-blur-xl with bg-[#12182b]/70 and a 1px border of white/10. NEVER use transparent backgrounds directly.",
+    "gradients": "No massive gradients. Use subtle radial gradients at the top of the screen or inside specific cards to simulate 'glow' from the data (e.g., small cyan radial glow).",
+    "animations": "Subtle pulse animations for active workloads. Scanner lines or moving gradients in the border for high-value cards."
+  },
+  "grids_and_layouts": {
+    "dashboard_grid": "High Density Grid (grid-cols-1 md:grid-cols-3 lg:grid-cols-4) with gap-4 or gap-6. Every pixel utilized.",
+    "spacing": "Generous Spacing (p-6, p-8) inside containers with borders to prevent text collision. Mobile-first responsive grids.",
+    "alignment": "Data and forms strictly left-aligned. Values in tables right-aligned if numeric, left if text."
+  },
+  "components": {
+    "cards": "Cardless, rectangular, sharp-edged or max 4px radius. 1px solid borders.",
+    "buttons": "Sharp buttons, hover states with text color change and border glow.",
+    "badges": "For Workload Status (Secure, Processing, Completed, Failed): Use JetBrains Mono, uppercase, highly visible neon colors with a 10% opacity background of the same color.",
+    "tables": "Shadcn tables with dense spacing, strict left alignment, and distinct hover state on rows.",
+    "forms": "Shadcn forms, solid background inputs, 1px border focus state."
+  },
+  "icons_and_assets": {
+    "icon_library": "lucide-react",
+    "image_urls": {
+      "hero_background": {
+        "url": "https://images.pexels.com/photos/17489152/pexels-photo-17489152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Server rack neon blue. Use with heavy dark overlay (e.g., bg-black/70) for background sections or banners."
+      },
+      "confidential_computing_explanation": {
+        "url": "https://images.pexels.com/photos/36750789/pexels-photo-36750789.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Combination lock. Use for the educational section explaining Confidential Computing."
+      },
+      "tee_technologies": {
+        "url": "https://images.pexels.com/photos/2105927/pexels-photo-2105927.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "CPU chip macro. Use for TEE Technologies (Intel SGX/AMD SEV) feature cards."
+      }
+    }
+  },
+  "motion": {
+    "hover_states": "All interactive elements must shift visually. Text color must lighten/darken, borders must glow.",
+    "loading": "Use code-like loading states (e.g., ASCII spinners or typing text) rather than generic circles.",
+    "transitions": "Use specific transition properties like `transition: transform 0.2s ease, opacity 0.2s ease`. NO `transition-all`."
+  },
+  "accessibility": {
+    "contrast": "Ensure minimum 4.5:1 ratio. Neon text must be bright enough against the deep navy background.",
+    "focus": "Focus states must have a 2px outline in neon cyan (ring-cyan-400) or primary color.",
+    "testing": "All interactive and key informational elements MUST include a `data-testid` attribute (e.g., data-testid='submit-workload-btn')."
+  },
+  "3d_libraries_and_charts": {
+    "charts": "Use Recharts for the Security Analysis indicators. A Radar Chart is highly recommended for displaying Data Protection, Memory Isolation, Runtime Protection, Secure Execution, and Attestation metrics."
+  },
+  "instructions_to_main_agent": [
+    "Do not use generic centering for the app container (.App { text-align: center; } is FORBIDDEN).",
+    "Use 1px borders to separate dashboard modules. No heavy box shadows in dark mode.",
+    "Pre-populate 3-5 sample workloads in MongoDB for demo purposes.",
+    "Build a custom Workload Monitoring table with 'Secure', 'Processing', 'Completed', 'Failed' statuses.",
+    "For TEE Technologies comparison, use a grid of high-contrast cards.",
+    "Include a CI/CD Pipeline Status card showing GitHub and Jenkins build statuses.",
+    "Ensure the dashboard conveys a 'Security/DevOps SaaS' aesthetic.",
+    "Apply `data-testid` to all interactive components.",
+    "Use Sonner for toasts."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": "Avoid generic outputs, 'AI slop' aesthetic, or simplistic gradients. Create depth with z-index hierarchy and glassmorphism. Never apply universal transitions (transition-all). Use 2-3x more spacing than typical. Incorporate micro-animations. Ensure all interactive components have a `data-testid` attribute. ONLY use images from the provided image_urls. Do not use placeholders."
+}

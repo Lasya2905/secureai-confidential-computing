@@ -1,0 +1,36 @@
+SecureAI-Cloud/
+# Environment
+.env
+.env.local
+.env.*.local
+!frontend/.env
+!backend/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+frontend/build/
+yarn-error.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Docker
+docker-compose.override.yml
+
+# Test artifacts
+coverage/
+htmlcov/
+frontend/node_modules/.cache/default-development/2.pack
