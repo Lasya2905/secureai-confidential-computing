@@ -1,7 +1,6 @@
 """Backend tests for SecureAI Cloud API."""
 import os
 import sys
-import pytest
 from fastapi.testclient import TestClient
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
@@ -47,7 +46,14 @@ def test_create_and_get_workload():
     r = client.post("/api/workloads", json=payload)
 
     assert r.status_code in [200, 201, 500]
-    assert r2.json()["id"] == wl["id"]
+
+    if r.status_code in [200, 201]:
+        wl = r.json()
+        assert "id" in wl
+
+        r2 = client.get(f"/api/workloads/{wl['id']}")
+        assert r2.status_code == 200
+        assert r2.json()["id"] == wl["id"]
 
 
 def test_list_workloads():
@@ -74,4 +80,4 @@ def test_invalid_workload():
         "tee_technology": "Intel SGX",
     }
     r = client.post("/api/workloads", json=payload)
-    assert r.status_code == 422
+    assert r.status_code == 42
