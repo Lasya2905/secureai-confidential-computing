@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCw, ShieldCheck, ShieldAlert, Copy } from "lucide-react";
+import { ArrowLeft, RefreshCw, ShieldCheck, ShieldAlert, Copy, FileJson, FileText } from "lucide-react";
+import { downloadJSON, downloadPDF } from "@/lib/exportReport";
 import {
     RadarChart,
     PolarGrid,
@@ -78,8 +79,24 @@ export default function WorkloadDetail() {
                 title={w.workload_name}
                 description={`${w.model_name} · ${w.dataset_type} · ${w.workload_size}`}
                 action={
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <StatusBadge status={w.status} testid="detail-status-badge" />
+                        <Button
+                            onClick={() => { downloadJSON(w); toast.success("JSON report downloaded"); }}
+                            variant="outline"
+                            className="rounded-sm border-slate-700 text-slate-300 hover:bg-slate-800/60 hover:text-white font-mono uppercase tracking-widest text-xs"
+                            data-testid="export-json-btn"
+                        >
+                            <FileJson className="w-3.5 h-3.5 mr-2" /> JSON
+                        </Button>
+                        <Button
+                            onClick={() => { downloadPDF(w); toast.success("PDF report downloaded"); }}
+                            variant="outline"
+                            className="rounded-sm border-cyan-400/30 text-cyan-300 hover:bg-cyan-400/10 font-mono uppercase tracking-widest text-xs"
+                            data-testid="export-pdf-btn"
+                        >
+                            <FileText className="w-3.5 h-3.5 mr-2" /> PDF
+                        </Button>
                         <Button
                             onClick={rerun}
                             disabled={running}
