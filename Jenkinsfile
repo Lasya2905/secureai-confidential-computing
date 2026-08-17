@@ -54,8 +54,16 @@ pipeline {
 
         stage('Backend Tests') {
             steps {
+                sh '''
+                    docker-compose up -d mongo
+                    sleep 10
+                '''
                 dir('backend') {
-                    sh 'python -m pytest ../tests/backend -v --maxfail=1 || (echo "Backend tests failed" && exit 1)'
+                    sh '''
+                        MONGO_URL=mongodb://mongo:27017 \
+                        DB_NAME=secureai_cloud_test \
+                        python -m pytest ../tests/backend -v --maxfail=1
+                    '''
                 }
             }
         }
