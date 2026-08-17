@@ -15,13 +15,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                echo 'Checking out SecureAI Cloud source...'
-                checkout scm
-            }
-        }
-
         stage('Install Dependencies') {
             parallel {
                 stage('Backend deps') {
